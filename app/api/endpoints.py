@@ -23,6 +23,7 @@ class ChatRequest(BaseModel):
 
 @router.post("/chat")
 async def chat_endpoint(request: ChatRequest, db: AsyncSession = Depends(get_db)):
+    print(f"DEBUG CHAT REQUEST: Email={request.user_email}, Message={request.message}")
     # Initialize graph
     app = create_agent_graph()
     

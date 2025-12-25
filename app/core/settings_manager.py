@@ -132,6 +132,19 @@ class SettingsManager:
             return self._config.api_keys[0].key
         return None
 
+    def get_all_api_keys(self) -> List[str]:
+        """Return a list of all available API keys, starting with the active one if set."""
+        keys = []
+        active = self.get_active_key()
+        if active:
+            keys.append(active)
+        
+        # Add others, avoiding duplicates
+        for k in self._config.api_keys:
+            if k.key != active:
+                keys.append(k.key)
+        return keys
+
     def get_active_model_resolved_id(self) -> str:
         """Resolve the active model ID to the actual provider model ID."""
         active = self._config.active_model_id
