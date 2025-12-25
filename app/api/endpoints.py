@@ -7,7 +7,10 @@ from langchain_core.messages import HumanMessage
 from pydantic import BaseModel
 from typing import Optional
 
+from app.api.auth import router as auth_router
+
 router = APIRouter()
+router.include_router(auth_router, prefix="/auth", tags=["auth"])
 
 class ChatRequest(BaseModel):
     message: str

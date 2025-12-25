@@ -18,3 +18,5 @@ passlib[bcrypt]
 python-jose[cryptography]
 python-multipart
 email-validator
+google-auth-oauthlib
+google-auth-httplib2
