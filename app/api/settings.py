@@ -9,7 +9,11 @@ settings_manager = get_settings_manager()
 class SettingsUpdate(BaseModel):
     google_api_key: str | None = None
     active_model_id: str | None = None
+    active_api_key_id: str | None = None
     system_instruction: str | None = None
+    temperature: float | None = None
+    api_keys: list[ApiKeyConfig] | None = None
+    models: list[ModelConfig] | None = None
 
 @router.get("/", response_model=AppConfig)
 async def get_settings():

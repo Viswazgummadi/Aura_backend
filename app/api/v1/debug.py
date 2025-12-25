@@ -71,9 +71,10 @@ async def diagnose_system():
 
     # 3. Test Model Connection (Standard Invoke)
     try:
-        log(f"Initialize Model ({active_model})", "START", "Attempting initialization...")
+        resolved_model = settings_manager.get_active_model_resolved_id()
+        log(f"Initialize Model ({resolved_model})", "START", "Attempting initialization...")
         llm = ChatGoogleGenerativeAI(
-            model=active_model,
+            model=resolved_model,
             google_api_key=api_key,
             temperature=0
         )

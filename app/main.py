@@ -36,8 +36,9 @@ async def lifespan(app: FastAPI):
             logger.warning("No Google API Key found in settings or environment. Chat may fail.")
         
         # Use a safe init that handles potential import/registry errors
+        resolved_model = settings_manager.get_active_model_resolved_id()
         model = ChatGoogleGenerativeAI(
-            model=config.active_model_id, 
+            model=resolved_model, 
             google_api_key=api_key,
             temperature=0
         )

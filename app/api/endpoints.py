@@ -8,14 +8,18 @@ from pydantic import BaseModel
 from typing import Optional
 
 from app.api.auth import router as auth_router
+from app.api import agent_endpoint, calendar
 
 router = APIRouter()
 router.include_router(auth_router, prefix="/auth", tags=["auth"])
+router.include_router(agent_endpoint.router, prefix="/agent", tags=["agent"])
+router.include_router(calendar.router, prefix="/calendar", tags=["calendar"])
 
 class ChatRequest(BaseModel):
     message: str
     thread_id: Optional[str] = None
     model_id: Optional[str] = None
+    user_email: Optional[str] = None
 
 @router.post("/chat")
 async def chat_endpoint(request: ChatRequest, db: AsyncSession = Depends(get_db)):
@@ -65,7 +69,10 @@ async def chat_endpoint(request: ChatRequest, db: AsyncSession = Depends(get_db)
     # Run graph with full history
     # Note: 'messages' key in state will usually be appended to. 
     # If using a pre-built graph that expects full state, we pass it all.
-    inputs = {"messages": langchain_messages} # This replaces state? depends on graph definition.
+    inputs = {
+        "messages": langchain_messages,
+        "user_context": {"email": request.user_email}
+    } # This replaces state? depends on graph definition.
     # If graph uses 'messages' as Annotated[list, add_messages], passing full list might duplicate if we are not careful.
     # Since we are essentially "rehydrating" the state, passing full history is correct for a stateless REST API model.
     

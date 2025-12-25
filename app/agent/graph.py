@@ -67,7 +67,7 @@ async def agent_node(state: AgentState):
         return {"messages": [AIMessage(content="<System>: API Key missing. Please configure it in Settings.")]}
 
     # Primary Model Selection
-    primary_model_id = config.active_model_id
+    primary_model_id = settings_manager.get_active_model_resolved_id()
     logger.info(f"Agent Node processing request. Active Model ID: {primary_model_id}")
     
     # Candidate list: Primary first, then fallbacks
